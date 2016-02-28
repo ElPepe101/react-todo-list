@@ -1,0 +1,10 @@
+{
+    "node": true,
+    "devel": true,
+    "strict": true,
+    "browser": true,
+    "globals": {
+        "app": true,
+        "angular": false
+    }
+}
