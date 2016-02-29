@@ -1,0 +1,27 @@
+[
+    {
+        "id": 1456702267059,
+        "author": "Antonio Segoviano",
+        "text": "This is wild men!"
+    },
+    {
+        "id": 1456702319212,
+        "author": "Script Injection",
+        "text": "<a href=\"#\" onclick=\"alert('Injected script')\">Check this out!</a>"
+    },
+    {
+        "id": 1456719662199,
+        "author": "Pepe Lucas",
+        "text": "Resembling"
+    },
+    {
+        "id": 1456721248729,
+        "author": "Las test ES6",
+        "text": "Classy"
+    },
+    {
+        "id": 1456721644048,
+        "author": "as das",
+        "text": "as da sdasd"
+    }
+]

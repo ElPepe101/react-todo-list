@@ -1,10 +1,14 @@
 {
     "node": true,
     "devel": true,
-    "strict": true,
+    "strict": false,
     "browser": true,
+    "browserify": true,
+    "esversion": 6,
     "globals": {
-        "app": true,
-        "angular": false
+        "React": false,
+        "ReactDOM": false,
+        "marked": false,
+        "$": false
     }
 }
