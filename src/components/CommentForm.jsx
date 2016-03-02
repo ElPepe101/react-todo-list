@@ -1,8 +1,9 @@
 "use strict";
 
-class CommentForm extends React.Component
-{
+import React from 'react';
 
+export default class CommentForm extends React.Component
+{
     self() {
         return this;
     }
@@ -19,13 +20,6 @@ class CommentForm extends React.Component
         this.handleAuthorChange = this.handleAuthorChange.bind(this);
         this.handleTextChange = this.handleTextChange.bind(this);
     }
-
-    /* ---- Changed to ES6
-       ---- http://stackoverflow.com/questions/30720620/reactjs-w-ecmascript-6
-    getInitialState()
-    {
-        return {author: "", text: ""};
-    }*/
 
     handleAuthorChange(e)
     {
@@ -54,7 +48,6 @@ class CommentForm extends React.Component
     render()
     {
         return (
-            /*jshint ignore:start */
             <form className="commentForm" onSubmit={this.handleSubmit}>
                 <input
                     type="text"
@@ -70,7 +63,6 @@ class CommentForm extends React.Component
                 />
                 <input type="submit" value="Post" />
             </form>
-            /*jshint ignore:end */
         );
     }
 }

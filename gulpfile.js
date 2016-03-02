@@ -1,35 +1,60 @@
 'use strict';
 
 var gulp = require('gulp');
+var runSequence = require('run-sequence');
+
+//var sourcemaps = require('gulp-sourcemaps');
+//var uglify = require('gulp-uglify');
+
 var browserSync = require('browser-sync');
+var reload = browserSync.reload;
 var nodemon = require('gulp-nodemon');
 
-/**
- * @TODO ES6 Babel compilant methods for require JSX files
- */
+var webpack = require('webpack-stream'); // https://www.twilio.com/blog/2015/08/setting-up-react-for-es6-with-webpack-and-babel-2.html
 
-//var browserify =
-
-gulp.task('default', ['browser-sync']);
-
-gulp.task('browser-sync', ['nodemon'], function() {
-
-	browserSync({
-        //logSnippet: false,
-        proxy: "localhost:" + (process.env.PORT || 3000),
-        files: ["src/**"],
-        watchOptions: {
-            ignored: 'comments.json'
-        }
-    });
+gulp.task('default', function()
+{
+	runSequence(
+		'build',
+		'nodemon',
+		'browsersync'
+	);
 });
 
-gulp.task('nodemon', function (cb) {
+gulp.task('build', ['webpack'], function()
+{
+	gulp.src(
+			["src/**/*.{html,css}"],
+			{base: "./src"}
+		)
+		.pipe(gulp.dest("./dist"));
 
+	gulp.watch(["src/**"], ["build"]);
+	gulp.watch(["dist/**"], reload);
+});
+
+gulp.task('webpack', function()
+{
+  return gulp.src('src/main.jsx')
+    .pipe(webpack(require('./webpack.config.js')))
+    .pipe(gulp.dest('dist/public/'));
+});
+
+gulp.task('browsersync', function()
+{
+	browserSync.init(null, {
+		proxy: "localhost:" + (process.env.PORT || 3000),
+        port: 7000
+	});
+});
+
+gulp.task('nodemon', function (cb)
+{
 	var started = false;
 
 	return nodemon({
-		script: './app/server.js'
+		script: 'server/server.js',
+		ignore: "**/*"
 	}).on('start', function () {
 		// to avoid nodemon being started multiple times
 		// thanks @matthisk

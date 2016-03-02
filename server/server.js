@@ -15,13 +15,14 @@ var path = require('path');
 var express = require('express');
 var bodyParser = require('body-parser');
 
-var app = express();
+// https://www.npmjs.com/package/gulp-express
+var app = module.exports.app = exports.app = express();
 
 var COMMENTS_FILE = path.join(__dirname, 'comments.json');
 
 app.set('port', (process.env.PORT || 3000));
 
-app.use('/', express.static(path.join(__dirname, 'app')));
+app.use('/', express.static(path.join(__dirname, '../dist')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 

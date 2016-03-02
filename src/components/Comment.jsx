@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-class Comment extends React.Component
+export default class Comment extends React.Component
 {
     rawMarkup ()
     {
@@ -20,5 +20,3 @@ class Comment extends React.Component
         );
     }
 }
-
-export default Comment;
