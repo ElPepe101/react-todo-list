@@ -24,17 +24,21 @@
     "babel-preset-react": "^6.5.0",
     "body-parser": "^1.15.0",
     "browser-sync": "^2.11.1",
+    "compression-webpack-plugin": "^0.2.0",
+    "connect-static-file": "^1.1.2",
     "exports-loader": "^0.6.3",
     "express": "^4.13.4",
     "gulp": "^3.9.1",
     "gulp-nodemon": "^2.0.6",
     "imports-loader": "^0.6.5",
     "run-sequence": "^1.1.5",
+    "socket.io": "^1.4.5",
     "webpack": "^1.12.14",
     "webpack-stream": "^3.1.0"
   },
   "dependencies": {
     "react": "^0.14.7",
-    "react-dom": "^0.14.7"
+    "react-dom": "^0.14.7",
+    "socket.io-client": "^1.4.5"
   }
 }

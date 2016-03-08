@@ -1,89 +1,55 @@
-"use strict";
+'use strict'
 
-import React from 'react';
-import CommentList from "CommentList.jsx";
-import CommentForm from "CommentForm.jsx";
+import React from 'react'
+import io from 'socket.io-client'
+import CommentList from 'CommentList.jsx'
+import CommentForm from 'CommentForm.jsx'
+
+// var fetch = typeof window !== 'undefined' ? window.fetch : null
+// var Request = typeof window !== 'undefined' ? window.Request : null
 
 export default class CommentBox extends React.Component
 {
-    constructor(props)
-    {
-        super(props);
-        this.state = {
-            data: []
-        };
-
-        // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-no-bind.md
-        this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
-        this.loadCommentsFromServer = this.loadCommentsFromServer.bind(this);
-        this.goFetch = this.goFetch.bind(this);
+  constructor (props) {
+    super(props)
+    this.state = {
+      data: []
     }
+    // https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-no-bind.md
+    this.handleCommentSubmit = this.handleCommentSubmit.bind(this)
+    this.loadCommentsFromServer = this.loadCommentsFromServer.bind(this)
+    this.socket = io.connect('http://localhost:3000/')
+  }
 
-    goFetch(request)
-    {
-        var promise = fetch(request);
+  loadCommentsFromServer () {
+    var socketGetComments = function (data) {
+      this.setState({data: data})
+    }.bind(this)
 
-        var data = promise.then(function(response)
-        {
-            if (response.ok) {
-                response.json().then(function(data)
-                {
-                    this.setState({data: data});
-                }.bind(this));
-            } else {
-                console.log("Bad response: ", response.status);
-            }
-        }.bind(this))
-        .catch(function(err)
-        {
-            throw new Error(err);
-        });
-    }
+    this.socket.on('getComments', socketGetComments)
+  }
 
-    loadCommentsFromServer()
-    {
-        var request = new Request(this.props.url,
-        {
-            headers:
-            {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        });
+  handleCommentSubmit (comment) {
+    this.socket.emit('putComment', comment)
+  }
 
-        this.goFetch(request);
-    }
+  componentDidMount () {
+    this.loadCommentsFromServer()
+    // setInterval(this.loadCommentsFromServer, this.props.pollInterval)
+  }
 
-    handleCommentSubmit(comment)
-    {
-        var request = new Request(this.props.url,
-        {
-            method: 'post',
-            headers:
-            {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(comment)
-        });
+  render () {
+    return (
+      <div className='commentBox'>
+          <h1>Comments</h1>
+          <CommentList data={this.state.data} />
+          <CommentForm onCommentSubmit={this.handleCommentSubmit} />
+      </div>
+    )
+  }
+}
 
-        this.goFetch(request);
-    }
-
-    componentDidMount()
-    {
-        this.loadCommentsFromServer();
-        setInterval(this.loadCommentsFromServer, this.props.pollInterval);
-    }
-
-    render()
-    {
-        return (
-            <div className="commentBox">
-                <h1>Comments</h1>
-                <CommentList data={this.state.data} />
-                <CommentForm onCommentSubmit={this.handleCommentSubmit} />
-            </div>
-        );
-    }
+CommentBox.propTypes = {
+  url: React.PropTypes.string.isRequired,
+  pollInterval: React.PropTypes.number.isRequired
 }
